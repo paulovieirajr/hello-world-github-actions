@@ -50,52 +50,25 @@ jobs:
           name: app-jar
           path: target/*.jar
 
-  codacy:
+  codacy-security-scan:
+    name: Codacy Security Scan
     runs-on: ubuntu-latest
-    needs: build
-
-    outputs:
-      version: ${{ needs.build.outputs.version }}
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@main
 
-      - name: Download Codacy CLI
-        run: curl -Ls https://github.com/codacy/codacy-cli/releases/latest/download/codacy-cli-linux -o codacy-cli
-
-      - name: Give execute permission
-        run: chmod +x codacy-cli
-
-      - name: Run Codacy CLI
-        run: ./codacy-cli init
-
-      - name: Run ESLint and generate report
-        run: |
-          npx eslint . -f sarif -o report.sarif
-
-      - name: Run Codacy CLI with ESLint report
-        run: ./codacy-cli analyze -r report.sarif --project-token ${{ secrets.CODACY_PROJECT_TOKEN }}
-
-  codacy-coverage-reporter:
-    runs-on: ubuntu-latest
-    needs: codacy
-
-    outputs:
-      version: ${{ needs.codacy.outputs.version }}
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
+      - name: Run Codacy Analysis CLI
+        uses: codacy/codacy-analysis-cli-action@master
         with:
-          name: jacoco-report
+          output: results.sarif
+          format: sarif
+          gh-code-scanning-compat: true
+          max-allowed-issues: 2147483647
 
-      - name: Run codacy-coverage-reporter
-        uses: codacy/codacy-coverage-reporter-action@v1.3.0
+      - name: Upload SARIF results file
+        uses: github/codeql-action/upload-sarif@main
         with:
-          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: target/site/jacoco/jacoco.xml
+          sarif_file: results.sarif
 
   docker:
     runs-on: ubuntu-latest
