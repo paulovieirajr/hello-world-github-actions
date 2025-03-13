@@ -58,29 +58,38 @@ jobs:
       version: ${{ needs.build.outputs.version }}
 
     steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Codacy CLI
+        run: |
+          curl -Ls https://github.com/codacy/codacy-cli/releases/latest/download/codacy-cli-linux -o codacy-cli
+          chmod +x codacy-cli
+
       - name: Initialize Codacy CLI
-        run: ./codacy-cli-v2 init
+        run: ./codacy-cli init
 
       - name: Run ESLint and generate report
-        run: npx eslint . -f sarif -o report.sarif
+        run: |
+          npx eslint . -f sarif -o report.sarif
 
       - name: Run Codacy CLI with ESLint report
-        uses: codacy/codacy-cli-v2-action@main
-        with:
-          project_token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          tool: eslint
-          upload_report: true
-          arguments: analyze -r report.sarif
+        run: ./codacy-cli analyze -r report.sarif --project-token ${{ secrets.CODACY_PROJECT_TOKEN }}
 
   codacy-coverage-reporter:
     runs-on: ubuntu-latest
-    needs: build
+    needs: codacy
 
     outputs:
       version: ${{ needs.codacy.outputs.version }}
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: jacoco-report
+
       - name: Run codacy-coverage-reporter
         uses: codacy/codacy-coverage-reporter-action@v1.3.0
         with:
