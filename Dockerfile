@@ -11,6 +11,12 @@ COPY .mvn .mvn
 COPY pom.xml .
 COPY src ./src
 
+# Grant execute permission to mvnw
+RUN chmod +x mvnw
+
+# Download dependencies to leverage Docker cache
+RUN ./mvnw dependency:go-offline
+
 # Build the application
 RUN ./mvnw clean package -DskipTests
 
