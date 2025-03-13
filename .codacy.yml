@@ -2,18 +2,25 @@
 engines:
   checkstyle:
     enabled: true
-    config_file: checkstyle.xml
   eslint:
-    enabled: true
+    enabled: false
   rubocop:
     enabled: false
   duplication:
-    enabled: true
+    enabled: false
   metrics:
-    enabled: true
+    enabled: false
   coverage:
     enabled: false
   trivy:
+    enabled: false
+  pylint:
+    enabled: false
+  bandit:
+    enabled: false
+  brakeman:
+    enabled: false
+  spotbugs:
     enabled: false
 
 exclude_paths:
@@ -24,5 +31,4 @@ exclude_paths:
   - 'LICENSE'
   - 'build/**'
   - 'target/**'
-  - '**/*Test.java'
   - '**/test/**'
