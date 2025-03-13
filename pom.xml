@@ -10,7 +10,7 @@
     </parent>
     <groupId>io.github.paulovieirajr</groupId>
     <artifactId>hello-world-github-actions</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
     <name>hello-world-github-actions</name>
     <description>Demo project for Spring Boot</description>
     <url/>
