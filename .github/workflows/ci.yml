@@ -19,6 +19,10 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
+          
+      - name: Extract Maven project version
+        id: project-version
+        run: echo "version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
       
       - name: Build with Maven
         run: mvn -B package --file pom.xml
@@ -60,4 +64,4 @@ jobs:
           push: true
           tags: |
             vieirajunior/hello-world-github-actions:latest
-            vieirajunior/hello-world-github-actions:${{ github.sha }}
+            vieirajunior/hello-world-github-actions:${{ env.version }}
