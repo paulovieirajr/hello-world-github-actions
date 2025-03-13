@@ -1,0 +1,26 @@
+---
+engines:
+  checkstyle:
+    enabled: true
+    config_file: checkstyle.xml
+  eslint:
+    enabled: true
+  rubocop:
+    enabled: false
+  duplication:
+    enabled: true
+  metrics:
+    enabled: true
+  coverage:
+    enabled: false
+
+exclude_paths:
+  - '.github/**'
+  - 'docs/**'
+  - '*.md'
+  - '*.yml'
+  - 'LICENSE'
+  - 'build/**'
+  - 'target/**'
+  - '**/*Test.java'
+  - '**/test/**'
