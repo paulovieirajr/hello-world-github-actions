@@ -61,11 +61,12 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Download Codacy CLI
-        run: |
-          curl -Ls https://github.com/codacy/codacy-cli/releases/latest/download/codacy-cli-linux -o codacy-cli
-          chmod +x codacy-cli
+        run: curl -Ls https://github.com/codacy/codacy-cli/releases/latest/download/codacy-cli-linux -o codacy-cli
 
-      - name: Initialize Codacy CLI
+      - name: Give execute permission
+        run: chmod +x codacy-cli
+
+      - name: Run Codacy CLI
         run: ./codacy-cli init
 
       - name: Run ESLint and generate report
