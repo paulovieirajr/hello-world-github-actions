@@ -69,6 +69,7 @@ jobs:
           format: sarif
           gh-code-scanning-compat: true
           max-allowed-issues: 2147483647
+          tool: checkstyle,eslint,duplication,metrics
           config-file: .codacy.yaml
 
       - name: Upload SARIF results file

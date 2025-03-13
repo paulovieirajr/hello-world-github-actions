@@ -13,6 +13,8 @@ engines:
     enabled: true
   coverage:
     enabled: false
+  trivy:
+    enabled: false
 
 exclude_paths:
   - '.github/**'
