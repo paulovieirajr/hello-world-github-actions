@@ -22,7 +22,15 @@ jobs:
           
       - name: Extract Maven project version
         id: project-version
-        run: echo "version=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+        run: |
+          VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout | tr -d '\n' | tr -d '\r')
+          echo "Extracted version: $VERSION"
+          if [ -z "$VERSION" ]; then
+            echo "Version not found! Failing the build."
+            exit 1
+          fi
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
       
       - name: Build with Maven
         run: mvn -B package --file pom.xml
@@ -64,4 +72,4 @@ jobs:
           push: true
           tags: |
             vieirajunior/hello-world-github-actions:latest
-            vieirajunior/hello-world-github-actions:${{ env.version }}
+            vieirajunior/hello-world-github-actions:${{ env.VERSION }}
