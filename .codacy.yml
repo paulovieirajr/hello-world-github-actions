@@ -1,0 +1,34 @@
+---
+engines:
+  checkstyle:
+    enabled: true
+  eslint:
+    enabled: false
+  rubocop:
+    enabled: false
+  duplication:
+    enabled: false
+  metrics:
+    enabled: false
+  coverage:
+    enabled: false
+  trivy:
+    enabled: false
+  pylint:
+    enabled: false
+  bandit:
+    enabled: false
+  brakeman:
+    enabled: false
+  spotbugs:
+    enabled: false
+
+exclude_paths:
+  - '.github/**'
+  - 'docs/**'
+  - '*.md'
+  - '*.yml'
+  - 'LICENSE'
+  - 'build/**'
+  - 'target/**'
+  - '**/test/**'
