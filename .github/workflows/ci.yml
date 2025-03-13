@@ -52,6 +52,7 @@ jobs:
 
   codacy:
     runs-on: ubuntu-latest
+    needs: build
 
     outputs:
       version: ${{ needs.build.outputs.version }}
@@ -67,7 +68,7 @@ jobs:
 
   codacy-coverage-reporter:
     runs-on: ubuntu-latest
-    name: codacy-coverage-reporter
+    needs: build
 
     outputs:
       version: ${{ needs.codacy.outputs.version }}
@@ -81,7 +82,7 @@ jobs:
 
   docker:
     runs-on: ubuntu-latest
-    needs: build
+    needs: [ build, codacy, codacy-coverage-reporter ]
 
     steps:
       - uses: actions/checkout@v4
